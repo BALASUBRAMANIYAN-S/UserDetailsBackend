@@ -7,4 +7,5 @@ class BookFilter(filters.FilterSet):
         Model = books
         fields = [
             'title',
+            'is_active',
         ]

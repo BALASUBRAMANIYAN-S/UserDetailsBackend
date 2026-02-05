@@ -7,7 +7,7 @@ from .serializers import Book_Serializer
 from .filters import BookFilter
 
 class BookViewAPI(ModelViewSet):
-    queryset = books.objects.filter(is_active=True)
+    queryset = books.objects.all()
     serializer_class = Book_Serializer
     filter_backends = [DjangoFilterBackend]
     filterset_class = BookFilter
