@@ -7,21 +7,29 @@ from .serializers import Book_Serializer
 from .filters import BookFilter
 
 class BookViewAPI(ModelViewSet):
-    queryset = books.objects.all()
+    queryset = books.objects.filter(is_active=True)
     serializer_class = Book_Serializer
     filter_backends = [DjangoFilterBackend]
     filterset_class = BookFilter
 
     def create(self, request, *args, **kwargs):
-        print("POST DATA:", request.data)
-
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         self.perform_create(serializer)
 
         return Response({
-                        "success": True,
-                        "message": "Book added successfully",
-                        "data": serializer.data
-                        }, 
-                        status=status.HTTP_201_CREATED)
+            "success": True,
+            "message": "Book added successfully",
+            "data": serializer.data
+        }, status=status.HTTP_201_CREATED)
+
+    # ✅ SOFT DELETE (THIS IS THE KEY)
+    def destroy(self, request, *args, **kwargs):
+        instance = self.get_object()
+        instance.is_active = False
+        instance.save()
+
+        return Response({
+            "success": True,
+            "message": "Book deactivated successfully"
+        }, status=status.HTTP_200_OK)

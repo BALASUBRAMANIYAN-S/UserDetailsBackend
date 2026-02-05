@@ -3,7 +3,8 @@ from rest_framework.routers import DefaultRouter
 from .views import BookViewAPI
 
 router = DefaultRouter()
-router.register('BookViewAPI', BookViewAPI, basename='BookViewAPI')
+router.register('books', BookViewAPI, basename='books')
+
 urlpatterns = [
-    path('',include(router.urls))
-] 
+    path('', include(router.urls)),
+]
